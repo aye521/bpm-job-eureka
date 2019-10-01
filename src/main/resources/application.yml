@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: dev
+    platform: dm-db
+    base: com.zrar.easyweb.bpmjob.controller
+    title: "BPM-JOB"
+    description: "工作流自动脚本任务"
+    version: "1.0"
+  application:
+    name: bpm-job-eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,cert

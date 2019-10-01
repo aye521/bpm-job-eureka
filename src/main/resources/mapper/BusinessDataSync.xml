@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zrar.easyweb.bpmjob.dao.IBusinessDataSyncDao">
+
+	<select id="getScannableData"  resultType="java.util.Map">
+        select table_name, act_def_id from flow_table where is_valid = '0'
+	</select>
+
+    <select id="getItemIDs"  parameterType="java.lang.String" resultType="java.lang.String">
+        select b.itemid from ${tableName} b , item_user_apply a  where b.itemid = a.itemid and b.FLOWRUNID_ is null and a.taskstatus = 'F1'
+    </select>
+
+    <select id="getDetail" parameterType="java.lang.String" resultType="java.util.Map">
+        select company,to_char(lastsubmissiontime, 'yyyy-mm-dd hh24:mi:ss') modifyTime,
+               to_char(firstsubmissiontime, 'yyyy-mm-dd hh24:mi:ss') firstTime,corp_name corpname ,correction,submitnum,
+                                     handlelimit from item_user_apply where itemid = #{businessKey}
+    </select>
+
+    <update id="updateRunId" parameterType="java.lang.String">
+        update ${tableName} set flowrunid_ =  #{runId} where itemid = #{businessKey}
+    </update>
+
+    <select id="getBizKeyByInstId"  parameterType="java.lang.String" resultType="java.lang.String">
+        select biz_key_ from bpm.bpm_pro_inst where bpmn_inst_id_ = #{instId}
+    </select>
+    <select id="getCorrectionCount"  parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1) from item_user_apply where itemid = #{businesskey} and correction = 3
+    </select>
+
+    <update id="updateTaskStatus" parameterType="java.lang.String">
+        update item_user_apply set taskstatus = #{status} where itemid = #{businessKey}
+    </update>
+	
+</mapper>
