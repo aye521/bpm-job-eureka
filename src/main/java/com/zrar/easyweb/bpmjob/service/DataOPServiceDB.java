@@ -31,4 +31,8 @@ public class DataOPServiceDB {
         dataSyncDao.updateTaskStatus(businessKey, status);
     }
 
+    public void startWF() {
+        workFlowStartService.startWorkFlow("", "");
+    }
+
 }

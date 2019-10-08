@@ -10,7 +10,7 @@ import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 
 @Configuration
 public class QuartzSubmitScheduler {
-    private static final String CRON_MINUTES = "0 0/2 * ? * * *";
+    private static final String CRON_MINUTES = "0 0/20 * ? * * *";
 
     @Bean(name = "jobWorkflowStart")
     public JobDetailFactoryBean jobWorkflowStart() {

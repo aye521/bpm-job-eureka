@@ -20,7 +20,7 @@ public class WorkflowStartJob implements Job {
         logger.info("start job : {}", context);
         workFlowStartService.getStartMetaData().forEach( map -> {
             logger.info("start workflow : {}", map);
-            workFlowStartService.startWorkFlow(map.get("TABLE_NAME"), map.get("ACT_DEF_ID"));
+            workFlowStartService.startWorkFlow(map.get("tname"), map.get("flowkey"));
         });
 
     }

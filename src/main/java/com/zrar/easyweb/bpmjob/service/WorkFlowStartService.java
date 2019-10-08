@@ -40,8 +40,9 @@ public class WorkFlowStartService {
             startFlowParam.put("flowKey", actDefId);
             startFlowParam.put("account", flowAccount);
             startFlowParam.put("businessKey", businessKey);
-//            startFlowParam.put("formType", "frame");
-            // 构建vars流程变量
+            //url表单frame，需要增加配置来确定表单类型，目前的代码只适用于内置表单
+            startFlowParam.put("formType", "inner");
+            // 构建vars流程变量,必须现在流程定义中先定义好变量
             final List<Map<String, String>> detail = dataSyncDao.getDetail(businessKey);
             if (detail.size() > 0) {
                 final Map<String, String> data = detail.get(0);
