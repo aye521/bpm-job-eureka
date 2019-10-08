@@ -15,7 +15,7 @@ import java.util.List;
  * 流程运行Restful接口访问的代理类
  * @company 安人股份
  */
-@FeignClient(name="bpm-runtime-eureka",fallback= BpmRuntimeFeignServiceImpl.class, configuration= FeignConfig.class)
+@FeignClient(name="bpm-runtime-eureka",fallbackFactory = BpmRuntimeFeignServiceImpl.class, configuration= FeignConfig.class)
 public interface BpmRuntimeFeignService {
 	
 	@RequestMapping(value = "/runtime/instance/v1/start", method = RequestMethod.POST)
