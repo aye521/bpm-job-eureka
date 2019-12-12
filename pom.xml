@@ -11,6 +11,7 @@
 	<groupId>com.zrar.easyweb</groupId>
 	<artifactId>bpm-job</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 	<name>bpm-job</name>
 	<description>automatic job execute</description>
 
@@ -171,6 +172,22 @@
                     <useDefaultDelimiters>false</useDefaultDelimiters>
                 </configuration>
             </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <skip>true</skip>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-war-plugin</artifactId>-->
+<!--                <version>3.2.3</version>-->
+<!--                <configuration>-->
+<!--                    <packagingExcludes>WEB-INF/lib/undertow-*.jar</packagingExcludes>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 		</plugins>
 
 	</build>

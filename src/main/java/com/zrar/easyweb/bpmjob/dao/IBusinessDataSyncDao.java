@@ -47,9 +47,9 @@ public interface IBusinessDataSyncDao {
 
     /**
      * 根据businessKey更新任务状态
-     * @param businessKey 业务主键
+     * @param id 业务主键
      * @param status 任务状态
      * @return 更新结果
      */
-    void updateTaskStatus(String businessKey, String status);
+    void updateTaskStatus(String id, String status);
 }

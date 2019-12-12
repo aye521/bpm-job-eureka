@@ -2,6 +2,7 @@ package com.zrar.easyweb.bpmjob.jobs;
 
 import org.quartz.JobDetail;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
@@ -10,7 +11,10 @@ import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 
 @Configuration
 public class QuartzSubmitScheduler {
-    private static final String CRON_MINUTES = "0 0/20 * ? * * *";
+    @Value("${configData.job.cron}")
+    private String cron;
+    @Value("${configData.job.interval}")
+    private int interval;
 
     @Bean(name = "jobWorkflowStart")
     public JobDetailFactoryBean jobWorkflowStart() {
@@ -18,7 +22,7 @@ public class QuartzSubmitScheduler {
     }
     @Bean(name = "workflowStartTrigger")
     public SimpleTriggerFactoryBean triggerWorkflowStart(@Qualifier("jobWorkflowStart") JobDetail jobDetail) {
-        return QuartzConfig.createTrigger(jobDetail, 600000, "Start Workflow Trigger");
+        return QuartzConfig.createTrigger(jobDetail, interval * 60 * 1000, "Start Workflow Trigger");
     }
     @Bean(name = "jobWorkflowComplete")
     public JobDetailFactoryBean jobWorkflowComplete() {
@@ -26,6 +30,6 @@ public class QuartzSubmitScheduler {
     }
     @Bean(name = "workflowCompleteTrigger")
     public CronTriggerFactoryBean triggerWorkflowComplete(@Qualifier("jobWorkflowComplete") JobDetail jobDetail) {
-        return QuartzConfig.createCronTrigger(jobDetail, CRON_MINUTES, "Complete Workflow Trigger");
+        return QuartzConfig.createCronTrigger(jobDetail, cron, "Complete Workflow Trigger");
     }
 }

@@ -29,6 +29,13 @@
         </root>
     </springProfile>
 
+    <springProfile name="itn">
+        <!-- 生产环境时激活 -->
+        <root level="info">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+
 	<springProfile name="uat">
 		<!-- 级别依次为【从高到低】：FATAL > ERROR > WARN > INFO > DEBUG > TRACE -->
 		<root level="ERROR">

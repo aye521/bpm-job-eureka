@@ -27,12 +27,12 @@ public class DataOPServiceDB {
         workFlowCompleteService.completeTask("admin");
     }
 
-    public void updateStatus(String businessKey, String status) {
-        dataSyncDao.updateTaskStatus(businessKey, status);
+    public void updateStatus(String id, String status) {
+        dataSyncDao.updateTaskStatus(id, status);
     }
 
     public void startWF() {
-        workFlowStartService.startWorkFlow("", "");
+//        workFlowStartService.startWorkFlow("", "");
     }
 
 }

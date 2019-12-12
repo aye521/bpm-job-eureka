@@ -1,10 +1,7 @@
 package com.zrar.easyweb.bpmjob.jobs;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.quartz.CronTrigger;
-import org.quartz.JobDetail;
-import org.quartz.SimpleTrigger;
-import org.quartz.Trigger;
+import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -33,6 +30,7 @@ public class QuartzConfig {
     }
     @Bean
     public SchedulerFactoryBean scheduler(Trigger... triggers) {
+        logger.info("create scheduler with {} triggers", triggers.length);
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
         Properties properties = new Properties();
         properties.setProperty("org.quartz.scheduler.instanceName", "MyInstanceName");
@@ -66,19 +64,23 @@ public class QuartzConfig {
     static CronTriggerFactoryBean createCronTrigger(JobDetail jobDetail, String cronExpression, String triggerName) {
         logger.info("createCronTrigger(jobDetail={}, cronExpression={}, triggerName={})", jobDetail.toString(), cronExpression, triggerName);
         // To fix an issue with time-based cron jobs
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.SECOND, 0);
-//        calendar.set(Calendar.MILLISECOND, 0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        //开始时间提早一分钟，以便在应用启动时尽可能早地触发一次job的执行
+        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) - 1);
         CronTriggerFactoryBean factoryBean = new CronTriggerFactoryBean();
         factoryBean.setJobDetail(jobDetail);
         factoryBean.setCronExpression(cronExpression);
-//        factoryBean.setStartTime(calendar.getTime());
+        factoryBean.setStartTime(calendar.getTime());
+        logger.info("cron start time : {}", calendar.getTime());
         factoryBean.setStartDelay(0L);
         factoryBean.setName(triggerName);
-        factoryBean.setMisfireInstruction(CronTrigger.MISFIRE_INSTRUCTION_DO_NOTHING);
+        //错过计划时间后立马执行job
+        factoryBean.setMisfireInstruction(CronTrigger.MISFIRE_INSTRUCTION_FIRE_ONCE_NOW);
         return factoryBean;
     }
-    static JobDetailFactoryBean createJobDetail(Class jobClass, String jobName) {
+    static JobDetailFactoryBean createJobDetail(Class<? extends Job> jobClass, String jobName) {
         logger.debug("createJobDetail(jobClass={}, jobName={})", jobClass.getName(), jobName);
         JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
         factoryBean.setName(jobName);

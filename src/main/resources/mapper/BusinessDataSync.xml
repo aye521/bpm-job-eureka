@@ -3,17 +3,17 @@
 <mapper namespace="com.zrar.easyweb.bpmjob.dao.IBusinessDataSyncDao">
 
 	<select id="getScannableData"  resultType="java.util.Map">
-        select table_name as tname, act_def_id as flowkey from flow_table where is_valid = '0'
+        select table_name as tname, act_def_id as flowkey, form_data as data from flow_table where is_valid = '0'
 	</select>
-
+<!--    通过某一张业务表的item_id定位到item_user_apply的某条需要启动流程的数据-->
     <select id="getItemIDs"  parameterType="java.lang.String" resultType="java.lang.String">
-        select b.item_id from ${tableName} b , item_user_apply a  where b.item_id = a.item_id and b.process_id is null and a.taskstatus = 'F1'
+        select a.item_id from ${tableName} b , item_user_apply a  where b.itemid = a.item_id and a.process_id is null and a.task_status = 'F1'
     </select>
 
     <select id="getDetail" parameterType="java.lang.String" resultType="java.util.Map">
-        select company,to_char(lastsubmissiontime, 'yyyy-mm-dd hh24:mi:ss') modifyTime,
-               to_char(firstsubmissiontime, 'yyyy-mm-dd hh24:mi:ss') firstTime,corp_name corpname ,correction,submitnum,
-                                     handlelimit from item_user_apply where item_id = #{businessKey}
+        select company_name as company,to_char(last_submission_time, 'yyyy-mm-dd hh24:mi:ss') modifyTime,
+               to_char(first_submission_time, 'yyyy-mm-dd hh24:mi:ss') firstTime,company_name corpname ,correction,submit_num as submitnum,
+               handle_limit as handlelimit from item_user_apply where item_id = #{businessKey}
     </select>
 
     <update id="updateRunId" parameterType="java.lang.String">
@@ -28,7 +28,7 @@
     </select>
 
     <update id="updateTaskStatus" parameterType="java.lang.String">
-        update item_user_apply set taskstatus = #{status} where item_id = #{businessKey}
+        update item_user_apply set task_status = #{status} where process_id = #{id}
     </update>
 	
 </mapper>

@@ -6,6 +6,8 @@ import com.zrar.easyweb.bpmjob.service.DataOPServiceDB;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -24,9 +26,14 @@ import java.util.Map;
 @SpringBootApplication(scanBasePackages = {"com.zrar.easyweb.*"})
 @MapperScan(basePackages={"com.zrar.easyweb.bpmjob.dao"})
 @EnableFeignClients(basePackages = {"com.zrar.easyweb.bpmjob.*"})
-public class BpmJobApplication {
+public class BpmJobApplication  {
 
    	public static void main(String[] args) {
 		SpringApplication.run(BpmJobApplication.class, args);
     }
+
+//    @Override
+//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+//        return builder.sources(BpmJobApplication.class);
+//    }
 }

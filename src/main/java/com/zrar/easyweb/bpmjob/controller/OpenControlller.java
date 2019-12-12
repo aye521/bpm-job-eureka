@@ -17,9 +17,9 @@ public class OpenControlller {
 
     @PostMapping(value = "taskstatus", produces = MediaType.TEXT_PLAIN_VALUE)
     @ApiOperation(value="更新任务状态", httpMethod = "POST", notes = "更新任务状态")
-    public String updateStatus(@ApiParam(name = "businessKey",value = "业务主键") @RequestParam String businessKey,
+    public String updateStatus(@ApiParam(name = "id",value = "主键") @RequestParam String id,
                                @ApiParam(name = "status", value ="任务状态") @RequestParam String status) {
-        dataOPServiceDB.updateStatus(businessKey, status);
+        dataOPServiceDB.updateStatus(id, status);
         return "更新成功";
     }
 
