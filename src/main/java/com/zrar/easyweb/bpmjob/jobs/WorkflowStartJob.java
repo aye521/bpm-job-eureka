@@ -26,9 +26,10 @@ public class WorkflowStartJob implements Job {
             final String tname = (String) insensitiveMap.get("tname");
             final String data = (String) insensitiveMap.get("data");
             final String flowKey = (String) insensitiveMap.get("flowkey");
+            final String syscode = (String) insensitiveMap.get("syscode");
             if (StringUtil.isNotEmpty(tname) && StringUtil.isNotEmpty(flowKey)
                 && StringUtil.isNotEmpty(data)) {
-                workFlowStartService.startWorkFlow(tname, flowKey, data);
+                workFlowStartService.startWorkFlow(tname, flowKey, syscode, data);
             } else {
                 logger.error("请检查流程启动配置：初始化数据, 流程key, 表名，三项均不能为空");
             }

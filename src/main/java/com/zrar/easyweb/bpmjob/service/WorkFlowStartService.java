@@ -32,13 +32,14 @@ public class WorkFlowStartService {
      * @param tableName 业务表名
      * @param actDefId  流程定义Id
      */
-    public void startWorkFlow(String tableName, String actDefId, String data){
+    public void startWorkFlow(String tableName, String actDefId, String syscode , String data){
         final List<String> itemIDs = dataSyncDao.getItemIDs(tableName);
         logger.info("需要启动流程-{}的业务记录总数 : {}", actDefId, itemIDs.size());
         itemIDs.forEach( businessKey -> {
             ObjectNode startFlowParam = JsonUtil.getMapper().createObjectNode();
             startFlowParam.put("flowKey", actDefId);
             startFlowParam.put("account", flowAccount);
+            startFlowParam.put("sysCode", syscode);
             //在线表单（非外部表导入）,启动不需要businesskey，必须传入空的数据结构，否则流程启动后表单展示不出来
             startFlowParam.put("data", data);
 //            startFlowParam.put("businessKey", businessKey);

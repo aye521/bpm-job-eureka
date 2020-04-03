@@ -3,7 +3,7 @@
 <mapper namespace="com.zrar.easyweb.bpmjob.dao.IBusinessDataSyncDao">
 
 	<select id="getScannableData"  resultType="java.util.Map">
-        select table_name as tname, act_def_id as flowkey, form_data as data from flow_table where is_valid = '0'
+        select table_name as tname, act_def_id as flowkey, form_data as data sys_code as syscode from flow_table where is_valid = '0'
 	</select>
 <!--    通过某一张业务表的item_id定位到item_user_apply的某条需要启动流程的数据-->
     <select id="getItemIDs"  parameterType="java.lang.String" resultType="java.lang.String">

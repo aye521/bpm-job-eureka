@@ -57,7 +57,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-quartz</artifactId>
-		</dependency>
+      <exclusions>
+        <exclusion>
+          <artifactId>quartz</artifactId>
+          <groupId>org.quartz-scheduler</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.quartz-scheduler</groupId>
+      <artifactId>quartz</artifactId>
+      <version>2.3.2</version>
+    </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -71,6 +82,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
+            <scope>provided</scope>
         </dependency>
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
@@ -111,6 +123,11 @@
             <artifactId>springfox-swagger2</artifactId>
             <version>2.9.2</version>
         </dependency>
+    <dependency>
+      <groupId>com.css.apps</groupId>
+      <artifactId>syslogClient</artifactId>
+      <version>1.0</version>
+    </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -148,46 +165,40 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
             <!-- 让配置文件可以读取pom中的信息 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.shared</groupId>
-                        <artifactId>maven-filtering</artifactId>
-                        <version>3.1.1</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <nonFilteredFileExtensions>
-                        <nonFilteredFileExtension>bpmn</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
-                    </nonFilteredFileExtensions>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.1.0</version>
+          <dependencies>
+              <dependency>
+                  <groupId>org.apache.maven.shared</groupId>
+                  <artifactId>maven-filtering</artifactId>
+                  <version>3.1.1</version>
+              </dependency>
+          </dependencies>
+          <configuration>
+              <nonFilteredFileExtensions>
+                  <nonFilteredFileExtension>bpmn</nonFilteredFileExtension>
+                  <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+              </nonFilteredFileExtensions>
 <!--                    //startToken*Endtoken,without * means both are same-->
-                    <delimiters>
+              <delimiters>
 <!--                        <delimiter>@@</delimiter>-->
-                        <delimiter>${*}</delimiter>
-                    </delimiters>
-                    <useDefaultDelimiters>false</useDefaultDelimiters>
-                </configuration>
-            </plugin>
+                  <delimiter>${*}</delimiter>
+              </delimiters>
+              <useDefaultDelimiters>false</useDefaultDelimiters>
+          </configuration>
+      </plugin>
 
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <skip>true</skip>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-war-plugin</artifactId>-->
-<!--                <version>3.2.3</version>-->
-<!--                <configuration>-->
-<!--                    <packagingExcludes>WEB-INF/lib/undertow-*.jar</packagingExcludes>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.3</version>
+        <configuration>
+          <packagingExcludes>WEB-INF/classes/**/UndertowConfig.class</packagingExcludes>
+<!--         依赖scope为provided也不会打包 <packagingExcludes>WEB-INF/lib/undertow-*.jar,WEB-INF/classes/**/UndertowConfig.class</packagingExcludes>-->
+        </configuration>
+      </plugin>
 		</plugins>
 
 	</build>

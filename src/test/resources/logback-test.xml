@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration debug="false" packagingData="false" scan="false" scanPeriod="3 seconds">
+    <contextName>test-logging</contextName>
+    <!--level : error > warn > info > debug -->
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.err</target>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <encoder>
+            <pattern>%date %level [%thread] : %caller{1}%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>TRACE</level>
+            <onMatch>ACCEPT</onMatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>DENY</onMatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+        </filter>
+        <encoder>
+            <pattern>%magenta(%date{mm:ss.SSS}) %-4.18thread : %cyan(%msg) %n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- won't log into STDOUT or STDERR -->
+    <!--<logger name="org.activiti" level="INFO" additivity="false">-->
+        <!--<appender-ref ref="FILE" />-->
+    <!--</logger>-->
+    <!--<logger name="org.springframework" level="DEBUG" additivity="false">-->
+        <!--<appender-ref ref="FILE" />-->
+    <!--</logger>-->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="STDERR" />
+    </root>
+</configuration>
