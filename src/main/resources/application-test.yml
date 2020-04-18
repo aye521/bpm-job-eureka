@@ -1,0 +1,131 @@
+spring:
+  datasource: 
+    name: dev
+    url: jdbc:dm://microdmdbserver:5236/MAIN?characterEncoding=UTF-8
+    username: FORM
+    password: arkj1234!@#$
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: dm.jdbc.driver.DmDriver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 1 from dual
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+    maxPoolPreparedStatementPerConnectionSize: 20
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  quartz:
+    job-store-type: memory
+
+
+mybatis:
+  typeAliasesPackage: com.zrar.easyweb.base.entity
+  mapperLocations: classpath*:mapper/*.xml
+  typeHandlersPackage: com.zrar.easyweb.bpmjob.typehandle
+
+# 配置打印SQL语句
+logging:
+  #  level:
+  #    com.zrar.easyweb.i18n.persistence.dao: DEBUG
+  #    com.zrar.easyweb.bpmModel.dao: DEBUG
+  #    com.zrar.easyweb.Calendar.dao: DEBUG
+  #    com.zrar.easyweb.runtime.dao: DEBUG
+  #    com.zrar.easyweb.bpm.persistence.dao: DEBUG
+  #    com.zrar.easyweb.sys.persistence.dao: DEBUG
+  #    com.zrar.easyweb.portal.persistence.dao: DEBUG
+  #    com.zrar.easyweb.uc.dao: DEBUG
+  #    com.zrar.easyweb.uc.base: DEBUG
+  config: classpath:logback-spring.xml
+
+eureka:
+  client:
+    healthcheck:
+      enabled:  true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+  httpclient:
+    enabled: true
+  okhttp:
+    enabled: false
+  instance:
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 10
+    prefer-ip-address: true
+
+configData:
+  account:
+    flow: admin
+  pageSize: 20
+  job:
+    cron: 0 */10 * ? * * *
+    #minutes
+    interval: 60
+
+# feign配置,httpclient不配置的话，第三方无法调用我们发布的服务
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    enabled: true
+    maxTotal: 3000
+    maxPerRoute: 200
+    connectTimeout: 3000
+    socketTimeout: 1500
+    retry: true
+    retryCount: 2
+  client:
+    config:
+      default:
+        connectTimeout: 50000
+        readTimeout: 50000
+        loggerLevel: full
+
+# 断路器配置
+hystrix:
+  metrics:
+    enabled: true
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE   # THREAD  SEMAPHORE
+          semaphore:
+            maxConcurrentRequests: 200 # 默认情况下下面两个值都是10，也就是超过10个的并发会直接进入fallback方法，不会去真正请求
+          thread:
+            timeoutInMilliseconds: 50000 #缺省为1000
+      fallback:
+        isolation:
+          semaphore:
+            maxConcurrentRequests: 200   # 默认情况下下面两个值都是10，也就是超过10个的并发会直接进入fallback方法，不会去真正请求
+# Server settings (ServerProperties)
+server:
+  port: 8980
+  address: 0.0.0.0
+  sessionTimeout: 30
+  undertow:
+    io-threads: 2
+    worker-threads: 30
+  session:
+
+  compression:
+    enabled: true
+    mime-types: 'text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json'
+    min-response-size: 1024
+  servlet:
+    context-path: /
+    session:
+      timeout: 30
+#展示eureka信息
+info:
+  app:
+    encoding: ${project.build.sourceEncoding}
+    java:
+      source: ${java.version}
+      target: ${java.version}
